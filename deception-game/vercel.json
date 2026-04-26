@@ -1,0 +1,8 @@
+{
+  "buildCommand": "npx ng build",
+  "outputDirectory": "dist/deception-game/browser",
+  "framework": null,
+  "rewrites": [
+    { "source": "/((?!assets/).*)", "destination": "/index.html" }
+  ]
+}
