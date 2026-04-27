@@ -155,6 +155,13 @@ export function registerRoomEvents(io: Server, socket: Socket): void {
   socket.on('rooms:refresh', () => {
     socket.emit('rooms:list', roomService.getLobbyList());
   });
+
+  // --- Request current game state (when game component loads) ---
+  socket.on('game:requestState', () => {
+    const room = roomService.findRoomByPlayerId(playerId);
+    if (!room || room.state === 'LOBBY') return;
+    socket.emit('game:state', getPlayerView(room, playerId));
+  });
 }
 
 function createPlayer(id: string, socketId: string, name: string): Player {

@@ -196,15 +196,17 @@ export class GameComponent implements OnInit, OnDestroy {
         this.evilView = data.evilView || null;
         this.gameResult = data.gameResult || null;
 
-        // Find current player
-        const socketId = this.socketService.socketId;
-        if (socketId && data.players) {
-          this.currentPlayer = data.players.find((p: Player) => p.id === socketId) || null;
+        // Find current player using server-provided myId
+        if (data.players && data.myId) {
+          this.currentPlayer = data.players.find((p: Player) => p.id === data.myId) || null;
         }
 
         // Handle state-specific logic
         this.handleStateChange(data);
       });
+
+    // Request current game state from server (handles race condition on page load)
+    this.socketService.emit('game:requestState');
 
     // Listen to accusation results
     this.socketService

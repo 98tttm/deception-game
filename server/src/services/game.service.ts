@@ -107,7 +107,8 @@ export function getPlayerView(room: GameRoom, playerId: string): Partial<GameRoo
     name: p.name,
     isConnected: p.isConnected,
     role: room.state === 'GAME_END' || p.id === playerId ? p.role : undefined,
-    hand: p.id === playerId ? p.hand : { means: p.hand.means.map(() => ({ id: '?', name: '?' })), clues: p.hand.clues.map(() => ({ id: '?', name: '?' })), flippedClues: p.hand.flippedClues },
+    // All players can see each other's means and clue cards
+    hand: p.hand,
     badges: p.badges,
     extraBadges: p.extraBadges,
   }));
@@ -160,5 +161,5 @@ export function getPlayerView(room: GameRoom, playerId: string): Partial<GameRoo
     };
   }
 
-  return { ...baseView, players: playersView as any, ...extraInfo };
+  return { ...baseView, players: playersView as any, myId: playerId, ...extraInfo } as any;
 }

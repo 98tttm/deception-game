@@ -10,9 +10,14 @@ import { roomService } from './services/room.service';
 const app = express();
 const server = http.createServer(app);
 
+const ALLOWED_ORIGINS = [
+  'http://localhost:4200',
+  ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : []),
+];
+
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:4200'],
+    origin: ALLOWED_ORIGINS,
     methods: ['GET', 'POST'],
   },
 });
